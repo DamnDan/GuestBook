@@ -26,16 +26,4 @@ public class EntryController {
         return "redirect:/all"; //instead of return "all";
     }
 
-    @GetMapping("/all")
-    public String getAllEntries(Model model) {
-        model.addAttribute("entries", entryRepository.findByName("Daniel")); //List for All Entries
-        model.addAttribute("entry", new Entry()); //Object for Form
-        return "all";
-    }
-
-    @GetMapping("/delete")
-    public String deleteEntry(@RequestParam(name="id") int id){
-        entryRepository.deleteById(id);
-        return "redirect:/all"; //instead of return "all";
-    }
 }

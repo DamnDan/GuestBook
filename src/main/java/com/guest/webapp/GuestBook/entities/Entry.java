@@ -26,15 +26,7 @@ public class Entry {
     @CreationTimestamp
     private Date createdOn;
 
-    @Override
-    public String toString() {
-        return "Entry{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", text='" + text + '\'' +
-                ", createdOn=" + createdOn +
-                '}';
-    }
+    
 
     public Entry() {
     }
