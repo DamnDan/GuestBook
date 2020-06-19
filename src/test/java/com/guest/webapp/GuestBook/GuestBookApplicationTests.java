@@ -1,29 +1,33 @@
 package com.guest.webapp.GuestBook;
 import com.guest.webapp.GuestBook.entities.Entry;
 import com.guest.webapp.GuestBook.repositories.EntryRepository;
-import org.junit.After;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import com.guest.webapp.GuestBook.service.EntryService;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.Assert;
+import org.springframework.test.context.junit4.SpringRunner;
+
 import java.util.ArrayList;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-class GuestBookApplicationTests {
-
-	static private List<Entry> entries = new ArrayList<>();
-	static private Entry entry;
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = GuestBookApp.class)
+public class GuestBookApplicationTests {
 
 	@Autowired
-	private EntryRepository entryRepository;
+	private EntryService entryService;
+
+	private List<Entry> entries = new ArrayList<>();
+	private Entry entry;
 
 
-	@BeforeAll
-	static void setup(){ //prepare dataset
+
+
+	@Before
+	public void setup(){ //prepare dataset
 		entries.add(new Entry("Hans Meier","Hallo dies ist ein Gästebucheintrag.)"));
 		entries.add(new Entry("Daniel","Dieses Gästebuch ist sehr schön, weiter so!"));
 		entries.add(new Entry("Wolf","Diese Einträge sind nur für den Testzweck."));
@@ -31,38 +35,34 @@ class GuestBookApplicationTests {
 	}
 
 	@Test //JPA's save method returns the persisted entity which can never be null.
-	@Order(1)
-	void testInsertOneEntry(){
-		entry = entryRepository.save(entry);
+	public void testInsertOneEntry(){
+		entryService.addEntry(entry);
+		entry = entryService.addEntry(entry);
 		assertThat(entry).isNotNull();
 	}
 
 	@Test
-	@Order(2)
-	void testUpdateOneEntry(){
+	public void testUpdateOneEntry(){
 		entry.setName("DanielTestUpdate");
-		entry = entryRepository.save(entry);
+		entry = entryService.addEntry(entry);
 		assertThat(entry).isNotNull();
 	}
 
 	@Test
-	@Order(3)
-	void testInsertMultipleEntries(){
-		entries = entryRepository.saveAll(entries);
+	public void testInsertMultipleEntries(){
+		entries = entryService.addEntries(entries);
 		assertThat(entries).isNotNull();
 	}
 
 	@Test
-	@Order(4)
-	void testFindAllEntries(){
-		entries = entryRepository.findAll();
+	public void testFindAllEntries(){
+		entries = entryService.findAll();
 		assertThat(entries).isNotNull();
 	}
 
 	@Test
-	@Order(5)
-	void testDeleteAllEntries(){
-		entryRepository.deleteAll();
-		assertThat(entryRepository.count()).isZero();
+	public void testDeleteAllEntries(){
+		entryService.deleteAll();
+		assertThat(entryService.count()).isZero();
 	}
 }

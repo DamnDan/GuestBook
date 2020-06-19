@@ -20,15 +20,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
-public class EntryServiceTest {
+public class EntryServiceTest { //argumentCaptor Test
 
     private EntryService service;
+    @Mock private Entry entry = new Entry();
     @Captor
     private ArgumentCaptor<Entry> entryArgumentCaptor;
-
-    private Entry mockEntry  = new Entry();
-    @Mock
-    private long timestamp;
     @Mock
     private EntryRepository mockEntryRepository;
     @Mock
@@ -36,17 +33,23 @@ public class EntryServiceTest {
 
     @Before
     public void setup() {
-        service = new EntryService(mockEntryRepository,timestamp);
+        service = new EntryService(mockEntryRepository);
         when(mockEntryRepository.save(entryArgumentCaptor.capture())).thenReturn(mockReturnEntry);
     }
 
     @Test
     public void canAddEntry() {
-        Entry returnVal =
-        service.addEntry(mockEntry);
-        verify(mockEntryRepository).save(mockEntry); //check if service delegates correctly //Deligiert
+        Entry returnVal = service.addEntry(entry);
+        verify(mockEntryRepository).save(entry); //check if service delegates correctly //Deligiert
         assertThat(returnVal).isEqualTo(mockReturnEntry); //check if the repository returns
-        assertThat(returnVal.getName()).isEqualTo("Daniel");
-        assertThat(entryArgumentCaptor.getValue().getName()).isEqualTo("Daniel"); //wurde es richtig bearbeitet?
+        //assertThat(returnVal.getName()).isEqualTo("Daniel");
+        //assertThat(entryArgumentCaptor.getValue().getName()).isEqualTo("Daniel"); //wurde es richtig bearbeitet?
+    }
+
+    @Test //JPA's save method returns the persisted entity which can never be null.
+    public void testInsertOneEntry(){
+        when(service.addEntry(entry)).thenReturn(entry);
+        entry = service.addEntry(entry);
+        assertThat(entry).isNotNull();
     }
 }

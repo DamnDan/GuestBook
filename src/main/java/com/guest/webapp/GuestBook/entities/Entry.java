@@ -5,12 +5,14 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 
 @Entity
 @Table(name = "guestbook_table")
 public class Entry {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id")
     private Integer id;
 

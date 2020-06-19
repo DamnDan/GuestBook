@@ -13,25 +13,12 @@
 <link href="https://fonts.googleapis.com/css?family=Muli|Ovo" rel="stylesheet">
 <link href="/css/guestbook.css" rel="stylesheet">
 
-<!-- Sign Guestbook Page -->
-<div class="container show">
-    <h1>Sign The Guestbook</h1>
-    <form action="#" th:action="@{/submit}" th:object="${entry}" method="post">
-        <input type="text" th:field="*{name}" placeholder="Full Name" class="form-element short"/>
-        <textarea class="form-element" name="message" rows="5" maxlength="100" cols="30" placeholder="Enter Your Message Here"
-                  th:field="*{text}"/>
-        <input class="form-button" type="submit" value="Submit">
-        <input class="form-button" type="reset" value="Reset Form">
-    </form>
-</div>
-
 <!-- Manage Guestbook Page -->
 <div class="container">
     <div class="full">
         <div class="guestbook">
             <h1>Manage Your Guestbook</h1>
             <div class="entry manage-entry" th:each="entry: ${entries}">
-
                     <div class="entry-left">
                         <div class="entry-info">
                             <p><span class="author" th:text="${entry.name}"/> |
@@ -42,6 +29,12 @@
                             <p th:text="${entry.text}"/>
                         </div>
                     </div>
+                        <div class="entry-options">
+                            <img class="icon"
+                                 src="https://cdn2.iconfinder.com/data/icons/flat-ui-icons-24-px/24/new-24-512.png">
+                            <a th:href="@{/delete(id=${entry.id})}"><img class="icon"
+                                                                         src="https://cdn3.iconfinder.com/data/icons/edition/100/trashcan-512.png"/></a>
+                        </div>
             </div>
         </div>
     </div>
