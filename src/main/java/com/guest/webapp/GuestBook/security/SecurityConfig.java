@@ -1,26 +1,30 @@
 package com.guest.webapp.GuestBook.security;
-
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.web.bind.annotation.RestController;
 
-@Configuration
-class SecurityConfig extends WebSecurityConfigurerAdapter {
+@SpringBootApplication
+@RestController
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String[] AUTH_WHITELIST = {
+    // ...
 
-            // -- swagger ui
-            "/swagger-resources/**",
-            "/swagger-ui.html",
-            "/v2/api-docs",
-            "/webjars/**",
-            "/all/**"
-    };
-
-    @Override
+    /*@Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers(AUTH_WHITELIST).permitAll()
-                .antMatchers("/**/*").permitAll(); //denyAll
-    }
+        // @formatter:off
+        http
+                .authorizeRequests(a -> a
+                        .antMatchers("/", "/error", "/webjars/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .exceptionHandling(e -> e
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                )
+                .oauth2Login();
+        // @formatter:on
+    }                  */
+
 }
